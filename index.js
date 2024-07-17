@@ -2,7 +2,7 @@ const menu = [
   {
     id: 1,
     title: 'pancakes au miel',
-    category: 'petit-déjeuner',
+    category: 'breakfast',
     price: 15.99,
     img: './images/item-1.jpeg',
     desc: `Lorem ipsum dolor sit, amet consectetur adipisicing elit. Enim, qui magni soluta similique voluptas voluptates! `,
@@ -10,7 +10,7 @@ const menu = [
   {
     id: 2,
     title: 'double steack',
-    category: 'dejeuner',
+    category: 'lunch',
     price: 13.99,
     img: './images/item-2.jpeg',
     desc: `Lorem ipsum dolor sit, amet consectetur adipisicing elit. Enim, qui magni soluta similique voluptas voluptates! `,
@@ -34,7 +34,7 @@ const menu = [
   {
     id: 5,
     title: 'Burger aux oeufs',
-    category: 'dejeuner',
+    category: 'lunch',
     price: 22.99,
     img: './images/item-5.jpeg',
     desc: `Lorem ipsum dolor sit, amet consectetur adipisicing elit. Enim, qui magni soluta similique voluptas voluptates!`,
@@ -50,7 +50,7 @@ const menu = [
   {
     id: 7,
     title: 'supplément bacon ',
-    category: 'petit-dejeuner',
+    category: 'breakfast',
     price: 8.99,
     img: './images/item-7.jpeg',
     desc: `Lorem ipsum dolor sit, amet consectetur adipisicing elit. Enim, qui magni soluta similique voluptas voluptates! `,
@@ -58,7 +58,7 @@ const menu = [
   {
     id: 8,
     title: 'le classique',
-    category: 'dejeuner',
+    category: 'lunch',
     price: 12.99,
     img: './images/item-8.jpeg',
     desc: `oLorem ipsum dolor sit, amet consectetur adipisicing elit. Enim, qui magni soluta similique voluptas voluptates! `,
@@ -74,24 +74,46 @@ const menu = [
 ];
 
 const sectionParent = document.querySelector('.section-center');
+const filterBtn = document.querySelectorAll('.filter-btn');
 
 window.addEventListener('DOMContentLoaded', function () {
-  let displayMenu = menu.map(function (item) {
+  displayMenuItems(menu);
+});
+
+filterBtn.forEach(function (btn) {
+  btn.addEventListener('click', function (e) {
+    const category = e.currentTarget.dataset.id;
+    const menuCategory = menu.filter(function (menuItem) {
+      // console.log(menuItem);
+      if (menuItem.category === category) {
+        return menuItem;
+      }
+    });
+    if (category === 'all') {
+      displayMenuItems(menu);
+    } else {
+      displayMenuItems(menuCategory);
+    }
+  });
+});
+
+function displayMenuItems(menuItems) {
+  let displayMenu = menuItems.map(function (item) {
     return `
-    <article class="menu-item">
-      <img src=${item.img} alt="menu item" class="photo" />
-      <div class="item-info">
-        <header>
-          <h4>${item.title}</h4>
-          <h4 class="price">${item.price}€</h4>
-        </header>
-        <p class="item-text">
-          ${item.desc}
-        </p>
-      </div>
-    </article>
-    `;
+   <article class="menu-item">
+     <img src=${item.img} alt="menu item" class="photo" />
+     <div class="item-info">
+       <header>
+         <h4>${item.title}</h4>
+         <h4 class="price">${item.price}€</h4>
+       </header>
+       <p class="item-text">
+         ${item.desc}
+       </p>
+     </div>
+   </article>
+   `;
   });
   displayMenu = displayMenu.join('');
   sectionParent.innerHTML = displayMenu;
-});
+}
